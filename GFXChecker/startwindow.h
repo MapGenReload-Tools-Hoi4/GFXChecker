@@ -27,7 +27,9 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonValue>
 #include <QDir>
+#include <QFile>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Startwindow; }
@@ -40,6 +42,7 @@ class Startwindow : public QMainWindow
 public:
     Startwindow(QWidget *parent = nullptr);
     ~Startwindow();
+    QString path_global;
 
     QString str_patch_index;
     QString str_patch_save;
@@ -47,6 +50,7 @@ public:
     QString str_patch_index_old;
     QString str_patch_save_old;
 
+    QJsonObject save_data;
     QJsonObject chet;
     QJsonObject patch_save;
     QJsonObject patch_index;
@@ -54,15 +58,15 @@ public:
     QString data[1000];
 
 
-    QString listdirsindir(QString path)
+    /*QString listdirsindir(QString path)
     {
-        /*
+
         Функция считывает список директорий в директории в QString.
         Входные параметры:
          path - путь к папке.
         Возвращаемое значение:
          Строка со списком директорий в директории, разделенные n в алфавитном порядке.
-        */
+
         QString line="";
         QDir dir(path);
         bool ok = dir.exists();
@@ -83,13 +87,13 @@ public:
 
     QString listfilesindir(QString path)
     {
-        /*
+
         Функция считывает список файлов (включая скрытые) в директории в QString.
         Входные параметры:
          path - путь к папке.
         Возвращаемое значение:
          Строка со списком файлов в директории, разделенные n в алфавитном порядке.
-        */
+
         QString line="";
         QDir dir(path);
         bool ok = dir.exists();
@@ -106,7 +110,7 @@ public:
             }
         }
         return line;
-    }
+    }*/
 
 
     void saveJson(QJsonDocument settings,QString fileName) {

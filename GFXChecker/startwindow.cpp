@@ -116,9 +116,16 @@ void Startwindow::on_author_program_button_clicked()
 // Запуск программмы //
 void Startwindow::on_start_program_clicked()
 {
-    QString path;
+
+    //
+    QString paths=QGuiApplication::applicationDirPath();
+    // получение пути где находится exe файл программы
+
+
+
+
     QString line="";
-    QDir dir(path);
+    QDir dir(str_patch_index_old);
     bool ok = dir.exists();
     int chets_real = 1;
     int chets_tech = 0;
@@ -135,6 +142,26 @@ void Startwindow::on_start_program_clicked()
             QFileInfo fileInfo = list.at(i);
             line+=fileInfo.fileName()+"\n";
             data[i]=fileInfo.fileName();
+        }
+    }
+
+    for (int up = 0;up < chets_tech; ++up){
+        QString line1="";
+        QDir dir1(str_patch_index_old +"/" + data[0]);
+        bool ok1 = dir1.exists();
+        if (ok1)
+        {
+            dir1.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+            dir1.setSorting(QDir::Name);
+            QFileInfoList list = dir1.entryInfoList();
+
+            for (int i = 0; i < list.size(); ++i)
+            {
+                QFileInfo fileInfo = list.at(i);
+                line+=fileInfo.fileName()+"\n";
+
+                ui->lineEdit_save->setText(line);
+            }
         }
     }
 
@@ -156,6 +183,29 @@ void Startwindow::on_start_program_clicked()
     chet.insert("data_score_tech",chets_tech);
     chet.insert("type",0);
     chet.insert("error",false);
+
+    for (int i = 0; i < chets_tech; ++i){
+
+       QJsonDocument data_json;
+
+       QJsonObject save_data_int;
+       QJsonObject save_data;
+
+       save_data.insert("data",data[i]);
+       save_data.insert("int",i+1);
+
+       QString chetchik = "0";
+       chetchik = QString::number(i);
+       save_data_int[chetchik] = save_data ;
+
+       data_json.setObject(save_data_int);
+       QFile file_set;
+
+       file_set.setFileName(chetchik);
+       saveJson(data_json,paths + "/cache/" + "data" + ".json");
+
+      // save_data.insert("error",0);
+    }
     //
     QJsonArray global_data;
     global_data.append(patch_index);
@@ -164,7 +214,7 @@ void Startwindow::on_start_program_clicked()
     //
     QJsonDocument json;
     json.setArray(global_data);
-    saveJson(json,"./settings/settings.json");
+    saveJson(json,paths + "/settings/settings.json");
     // Json end;
 
 
