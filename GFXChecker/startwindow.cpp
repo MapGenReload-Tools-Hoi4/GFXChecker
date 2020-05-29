@@ -44,6 +44,15 @@ void Startwindow::mouseMoveEvent(QMouseEvent *event) {
 }
 /*----------------------------------------------------------*/
 
+void checking_for_absence(QString file_path){
+
+    QString paths=QGuiApplication::applicationDirPath();
+    QFile file_set(paths + file_path);
+    file_set.open(QIODevice::WriteOnly);
+    file_set.close();
+}
+
+/*----------------------------------------------------------*/
 
 
 // сохранение папки с файлами //
@@ -168,22 +177,25 @@ void Startwindow::on_start_program_clicked()
 
 
 
-    // Json
+    // Json - индексирование папок
     patch_index.insert("patch_index",str_patch_index);
     patch_index.insert("patch_index_tech",str_patch_index_old);
     patch_index.insert("type",0);
     patch_index.insert("error",false);
-    //
+
+    // Json - индексирование файла для сохранения
     patch_save.insert("patch_save",str_patch_save);
     patch_save.insert("patch_save_tech",str_patch_save_old);
     patch_save.insert("type",0);
     patch_save.insert("error",false);
-    //
+
+    // Json - тех.конфигуация
     chet.insert("data_score_real",chets_real);
     chet.insert("data_score_tech",chets_tech);
     chet.insert("type",0);
     chet.insert("error",false);
 
+    // cache
     for (int i = 0; i < chets_tech; ++i){
 
        QJsonDocument data_json;
@@ -196,29 +208,32 @@ void Startwindow::on_start_program_clicked()
 
        QString chetchik = "0";
        chetchik = QString::number(i);
-       save_data_int[chetchik] = save_data ;
+       save_data_int.insert("data" + chetchik,save_data);
 
        data_json.setObject(save_data_int);
-       QFile file_set;
 
-       file_set.setFileName(chetchik);
+       checking_for_absence("/cache/data.json");
        saveJson(data_json,paths + "/cache/" + "data" + ".json");
+
 
       // save_data.insert("error",0);
     }
-    //
+
+
+    // ввод данных в массив для дальшей записи в файл с .json
     QJsonArray global_data;
     global_data.append(patch_index);
     global_data.append(patch_save);
     global_data.append(chet);
-    //
+
+
+    // запись в файл.
     QJsonDocument json;
     json.setArray(global_data);
+
+    checking_for_absence("/settings/settings.json");
     saveJson(json,paths + "/settings/settings.json");
     // Json end;
-
-
-
 
 }
 
