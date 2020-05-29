@@ -30,6 +30,7 @@
 #include <QJsonValue>
 #include <QDir>
 #include <QFile>
+#include <qDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Startwindow; }
@@ -55,7 +56,8 @@ public:
     QJsonObject patch_save;
     QJsonObject patch_index;
 
-    QString data[1000];
+    QString data_files[1000][70];
+    QString data_folder[1000];
 
 
     /*QString listdirsindir(QString path)

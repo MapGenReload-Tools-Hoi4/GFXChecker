@@ -16,6 +16,7 @@
 
 #include "progress.h"
 #include "ui_progress.h"
+#include "startwindow.h"
 
 
 #include <QTranslator>
