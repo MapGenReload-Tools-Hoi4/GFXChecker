@@ -30,7 +30,7 @@
 #include <QJsonValue>
 #include <QDir>
 #include <QFile>
-#include <qDebug>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Startwindow; }
@@ -56,6 +56,8 @@ public:
     QJsonObject patch_save;
     QJsonObject patch_index;
 
+    int redact;
+    int index_files[100];
     QString data_files[1000][70];
     QString data_folder[1000];
 
@@ -141,6 +143,10 @@ private slots:
     void on_author_program_button_clicked();
 
     void on_start_program_clicked();
+
+    void on_checkBox_clicked();
+
+    void on_radioButton_clicked();
 
 private:
     Ui::Startwindow *ui;

@@ -83,7 +83,7 @@ void Startwindow::on_path_index_clicked()
 {
     str_patch_index = QFileDialog::getExistingDirectory(0, "Выбрать путь к папке c .dds and .tga файлами...", "");
     str_patch_index_old = str_patch_index;
-    str_patch_index.replace("/","//");
+    //str_patch_index.replace("/","//");
     ui->lineEdit_index->setText(str_patch_index);
 }
 // сохранение папки с файлами end; //
@@ -93,11 +93,18 @@ void Startwindow::on_path_index_clicked()
   /*----------------------------------------------------------*/
   //                  Сохранение файла(.gfx)                  //
   /*----------------------------------------------------------*/
+void Startwindow::on_radioButton_clicked()
+{
+    if (redact == 1) { redact == 0; }
+    else { redact == 1; }
+}
+
+
 void Startwindow::on_path_save_clicked()
 {
     str_patch_save = QFileDialog::getOpenFileName(0, "Выбрать путь к файлу...", "" , "*.gfx");
     str_patch_save_old = str_patch_save;
-    str_patch_save .replace("/","//");
+    //str_patch_save .replace("/","//");
     ui->lineEdit_save->setText(str_patch_save);
 }
   // сохранение файла end; //
@@ -173,12 +180,11 @@ void Startwindow::on_start_program_clicked()
     /*----------------------------------------------------------*/
     //            Получаем весь список папок в папке.           //
     /*----------------------------------------------------------*/
-    //QString line="";
 
     qDebug() << " ";
-    qDebug() << "################";
-    qDebug() << "   Folder List  ";
-    qDebug() << "################";
+    qDebug() << "####################";
+    qDebug() << "    Folder List    ";
+    qDebug() << "####################";
     qDebug() << " ";
 
     QDir dir(str_patch_index_old);
@@ -196,13 +202,12 @@ void Startwindow::on_start_program_clicked()
             ++chets_real;
             ++chets_tech;
             QFileInfo fileInfo = list.at(i);
-            //line+=fileInfo.fileName();
             data_folder[i]=fileInfo.fileName();
 
             QString debug_num = "0";
             debug_num = QString::number(i);
 
-          qDebug() << "№" + debug_num  + " Folder:" + data_folder[i];
+          qDebug() << " - #" + debug_num  + " Folder:" + data_folder[i];
         }
     }
     /*----------------------------------------------------------*/
@@ -246,11 +251,18 @@ void Startwindow::on_start_program_clicked()
     int lvl = 0; // обр.массива
 
     for (int up = 0;up < chets_real; ++up){
-        //QString line1="";
         QDir dir1(str_patch_index_old + "/" + data_folder[up]);
         bool ok1 = dir1.exists();
         if (ok1)
         {
+            QString qDebug_int = QString::number(up);
+
+            qDebug() << " ";
+            qDebug() << "#################################################";
+            qDebug() << " #" + qDebug_int + " Folder: " + data_folder[up];
+            qDebug() << "#################################################";
+            qDebug() << " Filelist:";
+            qDebug() << " ";
             dir1.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
             dir1.setSorting(QDir::Name);
             QFileInfoList list1 = dir1.entryInfoList();
@@ -259,18 +271,21 @@ void Startwindow::on_start_program_clicked()
 
             for (int i = 0; i < list1.size(); ++i)
             {
-
+                ++index_files[up];
                 ++chets_real_2;
                 ++chets_tech_2;
                 QFileInfo fileInfo = list1.at(i);
                 data_files[i][lvl]=fileInfo.fileName();
 
                 QString debug_num = "0",lvl_summ = "0";
-                debug_num = QString::number(i);
+                debug_num = QString::number(i+1);
                 lvl_summ = QString::number(up);
 
-              qDebug() << "№" + debug_num  + " File:" + data_files[i][lvl];
+              qDebug() << " - #" + debug_num  + " File:" + data_files[i][lvl];
             }
+              qDebug() << " #" + data_folder[up] + " End Floder";
+              qDebug() << "\n\n";
+
         }
     }
     /*----------------------------------------------------------*/
@@ -283,13 +298,13 @@ void Startwindow::on_start_program_clicked()
     //                                                          //
     /*----------------------------------------------------------*/
 
-    // Json - индексирование папок
+    // Json - путь к папке для чека
     patch_index.insert("patch_index",str_patch_index);
     patch_index.insert("patch_index_tech",str_patch_index_old);
     patch_index.insert("type",0);
     patch_index.insert("error",false);
 
-    // Json - индексирование файла для сохранения
+    // Json - файл для сохранения
     patch_save.insert("patch_save",str_patch_save);
     patch_save.insert("patch_save_tech",str_patch_save_old);
     patch_save.insert("type",0);
@@ -303,16 +318,52 @@ void Startwindow::on_start_program_clicked()
     chet.insert("type",0);
     chet.insert("error",false);
 
-    // cache json
-    for (int i = 0; i < chets_tech_2; ++i){
+    /*----------------------------------------------------------*/
+    //                       cache json                         //
+    /*----------------------------------------------------------*/
+
+    QJsonDocument data_json;
+    QJsonArray db;
+    QJsonObject save_data;
+    QJsonObject name_editor;
+
+    // цикл для папок
+    for (int o = 0; o < chets_tech_2; ++o){
+        // цикл для файлов в папке
+        for (int o1 = 0; o1 < index_files[o]; ++o1){
+
+            //сохраняем файлы и папку и номер
+            save_data.insert("files",data_files[o1][o]);
+            save_data.insert("folder",data_folder[o]);
+            save_data.insert("int",o1+1);
+
+
+            QString folder_summ = QString::number(o);
+            QString files_summ = QString::number(o1);
+
+            //сохраняем в .json файл
+            name_editor [folder_summ + " : " + files_summ] = save_data;
+            db.append(name_editor);
+            data_json.setObject(name_editor);
+            checking_for_absence("/cache/cache.json");
+            saveJson(data_json,paths + "/cache/cache.json");
+            qDebug() << name_editor;
+        }
+    };
+
+    // QJsonObject save_data_int;
+    // checking_for_absence("/cache/cache.json");
+    // saveJson(data_json,paths + "/cache/cache.json");
+/*
+      for (int i = 0; i < chets_tech_2; ++i){
 
        QJsonDocument data_json;
 
        QJsonObject save_data_int;
        QJsonObject save_data;
 
-/*
-       save_data.insert("data",data_files[i]);
+
+       save_data.insert("data",data_files[i][lvl]);
        save_data.insert("int",i+1);
 
        QString chetchik = "0";
@@ -325,10 +376,13 @@ void Startwindow::on_start_program_clicked()
 
        checking_for_absence("/cache/data" + chetchik + ".json");
        saveJson(data_json,paths + "/cache/" + "data" + chetchik + ".json");
+
+       эта хуйня не работает,пофиксить кэширование в 1 файл все данные.
+
+       ###P.S = ( теперь работает) (удалить этот код)###
+
+       save_data.insert("error",0);
 */
-      // эта хуйня не работает,пофиксить кэширование в 1 файл все данные.
-      // save_data.insert("error",0);
-    }
 
 
     // ввод данных в массив для дальшей записи в файл с .json
@@ -341,7 +395,6 @@ void Startwindow::on_start_program_clicked()
     // запись в файл.
     QJsonDocument json;
     json.setArray(global_data);
-
     checking_for_absence("/settings/settings.json");
     saveJson(json,paths + "/settings/settings.json");
     // Json end;
@@ -349,3 +402,9 @@ void Startwindow::on_start_program_clicked()
 }
 
 //end program;
+
+// редактор
+void Startwindow::on_checkBox_clicked()
+{
+
+}
