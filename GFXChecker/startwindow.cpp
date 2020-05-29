@@ -14,6 +14,13 @@
   limitations under the License.
   ____________________________________________________________*/
 
+
+
+
+/*----------------------------------------------------------*/
+//                        Main Section                      //
+/*----------------------------------------------------------*/
+
 #include "startwindow.h"
 #include "ui_startwindow.h"
 
@@ -28,22 +35,33 @@ Startwindow::~Startwindow()
 {
     delete ui;
 }
+/*----------------------------------------------------------*/
+
+
+
+
+
+
 
 
 /*----------------------------------------------------------*/
-//                       движение окна                      //
+//                 Свободное движение окна                  //
 /*----------------------------------------------------------*/
 void Startwindow::mousePressEvent(QMouseEvent *event) {
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
 }
-/*----------------------------------------------------------*/
-
 void Startwindow::mouseMoveEvent(QMouseEvent *event) {
     move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
 }
 /*----------------------------------------------------------*/
 
+
+
+
+/*----------------------------------------------------------*/
+//                 Проверка на наличие файла                //
+/*----------------------------------------------------------*/
 void checking_for_absence(QString file_path){
 
     QString paths=QGuiApplication::applicationDirPath();
@@ -55,7 +73,12 @@ void checking_for_absence(QString file_path){
 /*----------------------------------------------------------*/
 
 
-// сохранение папки с файлами //
+
+
+
+/*----------------------------------------------------------*/
+//                Сохранение папки с файлами                //
+/*----------------------------------------------------------*/
 void Startwindow::on_path_index_clicked()
 {
     str_patch_index = QFileDialog::getExistingDirectory(0, "Выбрать путь к папке c .dds and .tga файлами...", "");
@@ -67,8 +90,9 @@ void Startwindow::on_path_index_clicked()
 
 
 
-
-// сохранение файла //
+/*----------------------------------------------------------*/
+//                  Сохранение файла(.gfx)                  //
+/*----------------------------------------------------------*/
 void Startwindow::on_path_save_clicked()
 {
     str_patch_save = QFileDialog::getOpenFileName(0, "Выбрать путь к файлу...", "" , "gfx");
@@ -81,8 +105,9 @@ void Startwindow::on_path_save_clicked()
 
 
 
-
-// Кнопка вызова помощи(FAQ) //
+/*----------------------------------------------------------*/
+//                  Кнопка вызова помощи(FAQ)               //
+/*----------------------------------------------------------*/
 void Startwindow::on_faq_button_clicked()
 {
   QMessageBox::information(this,"","","");
@@ -90,8 +115,9 @@ void Startwindow::on_faq_button_clicked()
 // Кнопка вызова помощи(FAQ) end; //
 
 
-
-// Кнопка предложить перевод! //
+/*----------------------------------------------------------*/
+//                  Кнопка предложить перевод!              //
+/*----------------------------------------------------------*/
 void Startwindow::on_help_local_clicked()
 {
     QDesktopServices::openUrl(QUrl("https://"));
@@ -100,8 +126,9 @@ void Startwindow::on_help_local_clicked()
 
 
 
-
-// Кнопка доната //
+/*----------------------------------------------------------*/
+//                       Кнопка доната                      //
+/*----------------------------------------------------------*/
 void Startwindow::on_donate_button_clicked()
 {
     //QDesktopServices::openUrl(QUrl("https://"));
@@ -111,8 +138,9 @@ void Startwindow::on_donate_button_clicked()
 // Кнопка доната end; //
 
 
-
-// Автор программы //
+/*----------------------------------------------------------*/
+//                      Автор программы                     //
+/*----------------------------------------------------------*/
 void Startwindow::on_author_program_button_clicked()
 {
     QMessageBox::information(this,"О авторе...."," Разработал Sepera_okeq\n Главный Разработчик мода Discord Server's Mod\n\n Группа мода разработчика: https://vk.com/serversdiscordmodhoi4\n\n\n(MIT)\n Для пожертвований :\n Qiwi :\n \n Cвязаться со мной: \n Discord: Sepera_okeq#5009\n Группа ВК - Написать сообщение - пометка#GFXChecker \n\n Официальный git(свежие версии): https://github.com/HOI4-tools/Country-HOI4-Generator\n\n\n                  Версия программы : beta 1.1 \n\t      Год выпуска :   2020 год");
@@ -121,18 +149,29 @@ void Startwindow::on_author_program_button_clicked()
 
 
 
+//############################################################//
+//#                                                          #//
+//#                                                          #//
+//#                     Запуск программмы                    #//
+//#                                                          #//
+//#                                                          #//
+//############################################################//
 
-// Запуск программмы //
 void Startwindow::on_start_program_clicked()
 {
 
-    //
-    QString paths=QGuiApplication::applicationDirPath();
-    // получение пути где находится exe файл программы
+    /*----------------------------------------------------------*/
+     QString paths=QGuiApplication::applicationDirPath();
+    //получаем путь,где лежит .exe файл программы.
+    /*----------------------------------------------------------*/
 
 
 
 
+
+     /*----------------------------------------------------------*/
+     //            Получаем весь список папок в папке.           //
+     /*----------------------------------------------------------*/
     QString line="";
     QDir dir(str_patch_index_old);
     bool ok = dir.exists();
@@ -153,7 +192,13 @@ void Startwindow::on_start_program_clicked()
             data[i]=fileInfo.fileName();
         }
     }
+    /*----------------------------------------------------------*/
 
+
+
+    /*----------------------------------------------------------*/
+    //            Получаем весь список файлов в папке.          //
+    /*----------------------------------------------------------*/
     for (int up = 0;up < chets_tech; ++up){
         QString line1="";
         QDir dir1(str_patch_index_old +"/" + data[0]);
@@ -173,9 +218,15 @@ void Startwindow::on_start_program_clicked()
             }
         }
     }
+    /*----------------------------------------------------------*/
 
 
 
+    /*----------------------------------------------------------*/
+    //                                                          //
+    //                          JSON                            //
+    //                                                          //
+    /*----------------------------------------------------------*/
 
     // Json - индексирование папок
     patch_index.insert("patch_index",str_patch_index);
@@ -195,7 +246,7 @@ void Startwindow::on_start_program_clicked()
     chet.insert("type",0);
     chet.insert("error",false);
 
-    // cache
+    // cache json
     for (int i = 0; i < chets_tech; ++i){
 
        QJsonDocument data_json;
