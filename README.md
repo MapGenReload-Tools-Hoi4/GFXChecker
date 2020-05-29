@@ -22,7 +22,5 @@ ___
 
 Сами требования - [тык](https://github.com/MapGenReload-Tools-Hoi4/GFXChecker/blob/master/CONTRIBUTING.md)
 ___
-Проект распространяется по [лицензии GPLv3](https://github.com/MapGenReload-Tools-Hoi4/GFXChecker/blob/master/LICENSE) 
-
-Некоторые компонеты,используемые для работы программы распространяются по [лицензии Apache 2.0](https://github.com/Sepera-okeq/MapGenLibarary/blob/master/LICENSE)
+Проект распространяется по [лицензии Apache 2.0](https://github.com/MapGenReload-Tools-Hoi4/GFXChecker/blob/master/LICENSE) 
 </p>
