@@ -339,11 +339,10 @@ void Startwindow::on_start_program_clicked()
 
     // цикл для папок
     for (int o = 0; o < chets_tech_2; ++o){
-        // цикл для файлов в папке
 
          QString folder_summ = QString::number(o);
 
-            if(data_folder[o]!=""){
+            if(data_folder[o]!=""){ //проверка на пустоту,а то выдает дохуя мусора.
 
                 save_data_folder.insert("folder",data_folder[o]);
 
@@ -359,7 +358,7 @@ void Startwindow::on_start_program_clicked()
 
 
 
-
+         // цикл для файлов в папке
         for (int o1 = 0; o1 < index_files[o]; ++o1){
 
             //сохраняем файлы и папку и номер
@@ -373,8 +372,8 @@ void Startwindow::on_start_program_clicked()
             name_editor [folder_summ + " : " + files_summ] = save_data;
             db.append(name_editor);
             data_json.setObject(name_editor);
-            checking_for_absence("/cache/cache.json");
-            saveJson(data_json,paths + "/cache/cache.json");
+            checking_for_absence("/cache/files.json");
+            saveJson(data_json,paths + "/cache/files.json");
             qDebug() << name_editor;
         }
     };
