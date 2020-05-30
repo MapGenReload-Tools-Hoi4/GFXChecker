@@ -56,7 +56,7 @@ public:
     QJsonObject patch_save;
     QJsonObject patch_index;
 
-    int redact;
+    int redact = 0;
     int index_files[100];
     QString data_files[1000][70];
     QString data_folder[1000];

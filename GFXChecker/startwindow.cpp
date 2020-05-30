@@ -95,8 +95,8 @@ void Startwindow::on_path_index_clicked()
   /*----------------------------------------------------------*/
 void Startwindow::on_radioButton_clicked()
 {
-    if (redact == 1) { redact == 0; }
-    else { redact == 1; }
+    if (redact == 1) { redact = 0; }
+    else { redact = 1; }
 }
 
 
@@ -322,14 +322,44 @@ void Startwindow::on_start_program_clicked()
     //                       cache json                         //
     /*----------------------------------------------------------*/
 
+    //folders
+    QJsonDocument data_json_folder;
+    //QJsonArray db_folder;
+    QJsonObject save_data_folder;
+    QJsonObject name_editor_folder;
+
+
+    //files
     QJsonDocument data_json;
     QJsonArray db;
     QJsonObject save_data;
     QJsonObject name_editor;
 
+
+
     // цикл для папок
     for (int o = 0; o < chets_tech_2; ++o){
         // цикл для файлов в папке
+
+         QString folder_summ = QString::number(o);
+
+            if(data_folder[o]!=""){
+
+                save_data_folder.insert("folder",data_folder[o]);
+
+                name_editor_folder[folder_summ] = save_data_folder;
+
+                data_json_folder.setObject(name_editor_folder);
+                checking_for_absence("/cache/folders.json");
+                saveJson(data_json_folder,paths + "/cache/folders.json");
+
+            }
+
+
+
+
+
+
         for (int o1 = 0; o1 < index_files[o]; ++o1){
 
             //сохраняем файлы и папку и номер
@@ -337,8 +367,6 @@ void Startwindow::on_start_program_clicked()
             save_data.insert("folder",data_folder[o]);
             save_data.insert("int",o1+1);
 
-
-            QString folder_summ = QString::number(o);
             QString files_summ = QString::number(o1);
 
             //сохраняем в .json файл
