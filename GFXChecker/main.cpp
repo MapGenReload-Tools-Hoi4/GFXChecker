@@ -24,8 +24,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Startwindow w;
-    w.setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
-    w.show();
+    Startwindow open;
+    open.setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
+    open.show();
     return a.exec();
 }

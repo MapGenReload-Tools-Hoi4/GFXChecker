@@ -34,15 +34,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    progress.cpp \
+    progress_window.cpp \
     startwindow.cpp
 
 HEADERS += \
-    progress.h \
+    explate.h \
+    progress_window.h \
     startwindow.h
 
 FORMS += \
-    progress.ui \
+    progress_window.ui \
     startwindow.ui
 
 TRANSLATIONS += \

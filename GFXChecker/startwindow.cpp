@@ -23,6 +23,8 @@
 
 #include "startwindow.h"
 #include "ui_startwindow.h"
+#include "progress_window.h"
+//#include "explate.h"
 
 Startwindow::Startwindow(QWidget *parent)
     : QMainWindow(parent)
@@ -300,23 +302,23 @@ void Startwindow::on_start_program_clicked()
 
     // Json - путь к папке для чека
     patch_index.insert("patch_index",str_patch_index);
-    patch_index.insert("patch_index_tech",str_patch_index_old);
-    patch_index.insert("type",0);
-    patch_index.insert("error",false);
+    //patch_index.insert("patch_index_tech",str_patch_index_old);
+    //patch_index.insert("type",0);
+    //patch_index.insert("error",false);
 
     // Json - файл для сохранения
     patch_save.insert("patch_save",str_patch_save);
-    patch_save.insert("patch_save_tech",str_patch_save_old);
-    patch_save.insert("type",0);
-    patch_save.insert("error",false);
+    //patch_save.insert("patch_save_tech",str_patch_save_old);
+    //patch_save.insert("type",0);
+    //patch_save.insert("error",false);
 
     // Json - тех.конфигуация
     chet.insert("data_score_real_folder",chets_real);
     chet.insert("data_score_tech_folder",chets_tech);
     chet.insert("data_score_real_files",chets_real_2);
     chet.insert("data_score_tech_files",chets_tech_2);
-    chet.insert("type",0);
-    chet.insert("error",false);
+    //chet.insert("type",0);
+    //chet.insert("error",false);
 
     /*----------------------------------------------------------*/
     //                       cache json                         //
@@ -425,6 +427,14 @@ void Startwindow::on_start_program_clicked()
     checking_for_absence("/settings/settings.json");
     saveJson(json,paths + "/settings/settings.json");
     // Json end;
+
+    // run program
+
+
+        progress_window open;
+        open.setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
+        open.setModal(true);
+        open.exec();
 
 }
 

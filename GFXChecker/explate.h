@@ -12,40 +12,45 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  ____________________________________________________________*/
+  ____________________________________________________________
+#ifndef PROGRESS_H
+#define PROGRESS_H
 
-#include "progress.h"
-#include "ui_progress.h"
-#include "startwindow.h"
-
-
+#include <QDialog>
+#include <QMainWindow>
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QMouseEvent>
 #include <QDesktopServices>
-#include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonValue>
+#include <QDir>
+#include <QFile>
 #include <QDebug>
 
-progress::progress(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::progress)
+
+namespace Ui {
+class progress;
+}
+
+class progress : public QDialog
 {
-    ui->setupUi(this);
-}
+    Q_OBJECT
 
-progress::~progress()
-{
-    delete ui;
-}
-QString data;
+public:
+    explicit progress(QWidget *parent = nullptr);
+    ~progress();
 
 
-void readJson(QString fileName){
-    QFile jsonFile(fileName);
-    jsonFile.open(QFile::ReadOnly);
+    QString data;
 
-}
+private:
+    Ui::progress *ui;
+};
+
+#endif // PROGRESS_H
+*/
